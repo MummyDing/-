@@ -1,0 +1,9 @@
+C:\Users\钦颖\Desktop\TestDll\TestDll\bin\Debug\TestDll.exe.config
+C:\Users\钦颖\Desktop\TestDll\TestDll\obj\Debug\TestDll.csprojResolveAssemblyReference.cache
+C:\Users\钦颖\Desktop\TestDll\TestDll\obj\Debug\TestDll.Form1.resources
+C:\Users\钦颖\Desktop\TestDll\TestDll\obj\Debug\TestDll.Properties.Resources.resources
+C:\Users\钦颖\Desktop\TestDll\TestDll\obj\Debug\TestDll.csproj.GenerateResource.Cache
+C:\Users\钦颖\Desktop\TestDll\TestDll\bin\Debug\TestDll.exe
+C:\Users\钦颖\Desktop\TestDll\TestDll\bin\Debug\TestDll.pdb
+C:\Users\钦颖\Desktop\TestDll\TestDll\obj\Debug\TestDll.exe
+C:\Users\钦颖\Desktop\TestDll\TestDll\obj\Debug\TestDll.pdb
