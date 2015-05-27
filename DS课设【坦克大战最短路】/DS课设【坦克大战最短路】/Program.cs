@@ -16,7 +16,7 @@ namespace DS课设_坦克大战最短路_
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run( new MainForm());
         }
     }
 }

@@ -50,7 +50,7 @@ enum TankAcationType
 	//Dir->Right Fire Fire
 	ChangeToRightFireTwo,
 	None
-	
+
 } TmpType;
 TankAcationType TmpPath[Max_Len];
 struct Node{
@@ -69,6 +69,7 @@ bool ok(int x, int y){
 
 extern "C"
 {
+
 	DECLDIR int bfs( char  * Map,TankAcationType  * ActionPath,int &Count){
 		m = 15;
 		n = 15;
@@ -94,7 +95,7 @@ extern "C"
 				chess[i][j] = '.';
 			}
 		}
-	
+
 		priority_queue<Node> q;
 		memset(visit, -1, sizeof(visit));
 		visit[sx][sy] = 0;
@@ -105,11 +106,11 @@ extern "C"
 		{
 			Node f = q.top();
 			q.pop();
-			if (f.x == ex&&f.y == ey){ 
+			if (f.x == ex&&f.y == ey){
 				for (int i = 0; i < f.step; i++)
 					ActionPath[i] = f.Path[i];
 				Count =  f.step;
-				return f.s; 
+				return f.s;
 			}
 			for (int i = 0; i<4; i++){
 				int dx = f.x + dir[i][0], dy = f.y + dir[i][1];
@@ -117,7 +118,7 @@ extern "C"
 					visit[dx][dy] = 0;
 					int temp = 0;
 					if (chess[dx][dy] == 'S'){
-						temp = 3; 
+						temp = 3;
 						if (f.d==i)
 						TmpType = FireTwoWall;
 						else {
@@ -139,8 +140,8 @@ extern "C"
 							}
 						}
 					}
-					else if (chess[dx][dy] == 'B'){ 
-						temp = 2; 
+					else if (chess[dx][dy] == 'B'){
+						temp = 2;
 						if(f.d==i)TmpType = FireOneWall;
 						else {
 							temp++;
@@ -162,7 +163,7 @@ extern "C"
 						}
 					}
 					else if (chess[dx][dy] == '.') {
-						temp = 1; 
+						temp = 1;
 						if(f.d==i)TmpType = MoveStep;
 						else {
 							temp++;
@@ -189,7 +190,7 @@ extern "C"
 					Node tmp = { dx, dy, f.s + temp};
 					for (int k = 0; k <= f.step; k++)
 					 tmp.Path[k] = TmpPath[k];
-					tmp.step = f.step + 1; 
+					tmp.step = f.step + 1;
 					tmp.d = i;
 					q.push(tmp);
 				}

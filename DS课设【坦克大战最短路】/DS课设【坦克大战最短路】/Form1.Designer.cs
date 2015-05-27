@@ -34,6 +34,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.NewGameMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.新游戏ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.游戏说明ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DrawMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.TankMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.BrickMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,12 +45,18 @@
             this.ModelMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.AutoModelMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ManualModelMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.地图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AutoMapMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ManualMapMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.EnergyCost = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
+            this.CutPic = new System.Windows.Forms.Label();
+            this.NextStep = new System.Windows.Forms.Label();
+            this.helpProvider = new System.Windows.Forms.HelpProvider();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -71,7 +79,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewGameMenu,
             this.DrawMenu,
-            this.ModelMenu});
+            this.ModelMenu,
+            this.地图ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(720, 25);
@@ -80,10 +89,26 @@
             // 
             // NewGameMenu
             // 
+            this.NewGameMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.新游戏ToolStripMenuItem,
+            this.游戏说明ToolStripMenuItem});
             this.NewGameMenu.Name = "NewGameMenu";
-            this.NewGameMenu.Size = new System.Drawing.Size(56, 21);
-            this.NewGameMenu.Text = "新游戏";
-            this.NewGameMenu.Click += new System.EventHandler(this.NewGameMenu_Click);
+            this.NewGameMenu.Size = new System.Drawing.Size(44, 21);
+            this.NewGameMenu.Text = "游戏";
+            // 
+            // 新游戏ToolStripMenuItem
+            // 
+            this.新游戏ToolStripMenuItem.Name = "新游戏ToolStripMenuItem";
+            this.新游戏ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.新游戏ToolStripMenuItem.Text = "新游戏";
+            this.新游戏ToolStripMenuItem.Click += new System.EventHandler(this.新游戏ToolStripMenuItem_Click);
+            // 
+            // 游戏说明ToolStripMenuItem
+            // 
+            this.游戏说明ToolStripMenuItem.Name = "游戏说明ToolStripMenuItem";
+            this.游戏说明ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.游戏说明ToolStripMenuItem.Text = "游戏说明";
+            this.游戏说明ToolStripMenuItem.Click += new System.EventHandler(this.游戏说明ToolStripMenuItem_Click);
             // 
             // DrawMenu
             // 
@@ -155,19 +180,42 @@
             this.ManualModelMenu.Text = "手动";
             this.ManualModelMenu.Click += new System.EventHandler(this.ManualModelMenu_Click);
             // 
+            // 地图ToolStripMenuItem
+            // 
+            this.地图ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.AutoMapMenu,
+            this.ManualMapMenu});
+            this.地图ToolStripMenuItem.Name = "地图ToolStripMenuItem";
+            this.地图ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.地图ToolStripMenuItem.Text = "地图";
+            // 
+            // AutoMapMenu
+            // 
+            this.AutoMapMenu.Name = "AutoMapMenu";
+            this.AutoMapMenu.Size = new System.Drawing.Size(124, 22);
+            this.AutoMapMenu.Text = "自动生成";
+            this.AutoMapMenu.Click += new System.EventHandler(this.自动生成ToolStripMenuItem_Click);
+            // 
+            // ManualMapMenu
+            // 
+            this.ManualMapMenu.Name = "ManualMapMenu";
+            this.ManualMapMenu.Size = new System.Drawing.Size(124, 22);
+            this.ManualMapMenu.Text = "手动绘制";
+            this.ManualMapMenu.Click += new System.EventHandler(this.ManualMapMenu_Click);
+            // 
             // EnergyCost
             // 
             this.EnergyCost.Enabled = false;
-            this.EnergyCost.Location = new System.Drawing.Point(572, 0);
+            this.EnergyCost.Location = new System.Drawing.Point(518, 0);
             this.EnergyCost.Name = "EnergyCost";
-            this.EnergyCost.Size = new System.Drawing.Size(72, 23);
+            this.EnergyCost.Size = new System.Drawing.Size(40, 23);
             this.EnergyCost.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(480, 5);
+            this.label1.Location = new System.Drawing.Point(432, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 17);
             this.label1.TabIndex = 3;
@@ -182,7 +230,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(184, 5);
+            this.label2.Location = new System.Drawing.Point(199, 5);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 17);
             this.label2.TabIndex = 4;
@@ -196,11 +244,33 @@
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.SystemColors.Control;
-            this.label3.Location = new System.Drawing.Point(333, 6);
+            this.label3.Location = new System.Drawing.Point(319, 5);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 17);
             this.label3.TabIndex = 5;
             this.label3.Text = "当前鼠标坐标:";
+            // 
+            // CutPic
+            // 
+            this.CutPic.AutoSize = true;
+            this.CutPic.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.CutPic.Location = new System.Drawing.Point(683, 4);
+            this.CutPic.Name = "CutPic";
+            this.CutPic.Size = new System.Drawing.Size(32, 17);
+            this.CutPic.TabIndex = 6;
+            this.CutPic.Text = "截图";
+            this.CutPic.Click += new System.EventHandler(this.CutPic_Click);
+            // 
+            // NextStep
+            // 
+            this.NextStep.AutoSize = true;
+            this.NextStep.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.NextStep.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.NextStep.Location = new System.Drawing.Point(564, 3);
+            this.NextStep.Name = "NextStep";
+            this.NextStep.Size = new System.Drawing.Size(47, 17);
+            this.NextStep.TabIndex = 7;
+            this.NextStep.Text = "下一步:";
             // 
             // MainForm
             // 
@@ -208,6 +278,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(720, 678);
+            this.Controls.Add(this.NextStep);
+            this.Controls.Add(this.CutPic);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -220,8 +292,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "坦克大战最短路";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
@@ -257,6 +329,14 @@
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.ToolStripMenuItem NewGameMenu;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ToolStripMenuItem 地图ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AutoMapMenu;
+        private System.Windows.Forms.ToolStripMenuItem ManualMapMenu;
+        private System.Windows.Forms.Label CutPic;
+        private System.Windows.Forms.Label NextStep;
+        private System.Windows.Forms.HelpProvider helpProvider;
+        private System.Windows.Forms.ToolStripMenuItem 新游戏ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 游戏说明ToolStripMenuItem;
     }
 }
 

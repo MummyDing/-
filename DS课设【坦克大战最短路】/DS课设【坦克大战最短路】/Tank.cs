@@ -73,7 +73,7 @@ namespace DS课设_坦克大战最短路_
         #region 响应KeyDown事件
         public void KeyDown(KeyEventArgs e)
         {
-            switch (e.KeyCode)
+              switch (e.KeyCode)
             {
                 case Keys.Up:
                     if (this.Dir == Direction.Up) this.Move();
@@ -163,9 +163,11 @@ namespace DS课设_坦克大战最短路_
                 IsMove = false;
                 this.Y = RightDownY;
             }
-
+          
             int GridX = this.X / MainForm.GridWidth;
             int GridY = (this.Y - LeftUpY) / MainForm.GridWidth;
+       
+
             if (GameObject.EndPoint.X == GridX && GameObject.EndPoint.Y == GridY)
             {
                 GameObject.Cost++;
@@ -183,7 +185,7 @@ namespace DS课设_坦克大战最短路_
                 return;
             }
             //判断该点是否还能走
-            if (GameObject.IsVisit[GridX, GridY] == false&&IsMove)
+            if (GameObject.IsVisit[GridX, GridY] == false||IsMove==false)
             {
                 IsMove = false;
                 this.X = tempX;

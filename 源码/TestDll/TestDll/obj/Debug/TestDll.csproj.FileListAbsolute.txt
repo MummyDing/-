@@ -7,3 +7,12 @@ C:\Users\钦颖\Desktop\TestDll\TestDll\bin\Debug\TestDll.exe
 C:\Users\钦颖\Desktop\TestDll\TestDll\bin\Debug\TestDll.pdb
 C:\Users\钦颖\Desktop\TestDll\TestDll\obj\Debug\TestDll.exe
 C:\Users\钦颖\Desktop\TestDll\TestDll\obj\Debug\TestDll.pdb
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\bin\Debug\TestDll.exe.config
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\obj\Debug\TestDll.exe
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\obj\Debug\TestDll.pdb
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\bin\Debug\TestDll.exe
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\bin\Debug\TestDll.pdb
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\obj\Debug\TestDll.csprojResolveAssemblyReference.cache
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\obj\Debug\TestDll.Form1.resources
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\obj\Debug\TestDll.Properties.Resources.resources
+G:\源码\C#\DS课设坦克大战最短路V2.0\源码\TestDll\TestDll\obj\Debug\TestDll.csproj.GenerateResource.Cache

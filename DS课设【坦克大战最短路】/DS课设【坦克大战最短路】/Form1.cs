@@ -12,7 +12,7 @@ using System.Media;
 using System.Runtime.InteropServices; 
 namespace DS课设_坦克大战最短路_
 {
-   
+  
     #region 枚举变量定义
     /// <summary>
     /// 绘制类型
@@ -41,7 +41,15 @@ namespace DS课设_坦克大战最短路_
         DrawStar,
         None
     };
-
+    /// <summary>
+    /// 地图绘制模式
+    /// </summary>
+    public enum MapDrawMode
+    {
+        Auto,
+        Manual,
+        None
+    };
     public enum TankAcationType
     {
         //Move
@@ -86,25 +94,38 @@ namespace DS课设_坦克大战最短路_
     public partial class MainForm : Form
     {
         #region 参数定义
+        public static Bitmap CatchBmp = new Bitmap(Screen.AllScreens[0].Bounds.Width,
+              Screen.AllScreens[0].Bounds.Height);
+        public static bool isCutDraw = false;
+        //创建截图窗体
+        Cutter cutter = new Cutter();
         [DllImport("CppDll.dll", SetLastError = true,CallingConvention=CallingConvention.Cdecl)]
         private static extern int bfs(string Map,  TankAcationType[] Path,ref int ToTalStep);
         /// <summary>
         /// 方格边长
         /// </summary>
         public static int GridWidth=60;
+        public static int WidthX = 12;
+        public static int HeightY = 11;
         /// <summary>
         /// 一条边的方格数
         /// </summary>
         public static int GridNum = 15;
         public static int TotalStep;
+        public static Random randomNum = new Random();
         /// <summary>
         /// 总共需要消耗的能量
         /// </summary>
-        public static int TotalCost;
+        public static int TotalCost=-2;
         /// <summary>
         /// 当前"绘制"类型
         /// </summary>
         public static OperType Type=OperType.None;
+        /// <summary>
+        /// 当前地图绘制类型
+        /// </summary>
+        public static MapDrawMode mapDrawMode = MapDrawMode.None;
+
         /// <summary>
         /// 自动模式标记变量
         /// </summary>
@@ -113,12 +134,32 @@ namespace DS课设_坦克大战最短路_
         /// 手动模式标记变量
         /// </summary>
         public static bool ManualModelOpen = false;
+
+
          #endregion
          public MainForm()
         {
             InitializeComponent();
+            int xWidth = SystemInformation.PrimaryMonitorSize.Width;//获取显示器屏幕宽度
+            int yHeight = SystemInformation.PrimaryMonitorSize.Height;//高度
+            this.Location = new Point(-5,-25);
+
         }
         #region 初始化方法
+         public void InitMap()
+         {
+             for (int i = 0; i < GridNum; i++)
+             {
+                 for (int j = 0; j < GridNum; j++)
+                 {
+                     GameObject.InitMap[i, j] = '#';
+                     GameObject.IsVisit[i, j] = true;
+                     GameObject.InitIsVisit[i, j] = true;
+                 }
+             }
+             GameObject.StartPoint.X = -1;
+             GameObject.EndPoint.X = -1;
+         }
         /// <summary>
         /// 【新游戏】
         /// </summary>
@@ -132,21 +173,13 @@ namespace DS课设_坦克大战最短路_
             SingleObject.listStell.Clear();
             #endregion
             #region 初始化变量
-            for (int i = 0; i < GridNum; i++)
-            {
-                for (int j = 0; j < GridNum; j++)
-                {
-                    GameObject.InitMap[i, j] = '#';
-                    GameObject.IsVisit[i, j] = true;
-                    GameObject.InitIsVisit[i, j] = true;
-                }
-            }
-            GameObject.StartPoint.X = -1;
-            GameObject.EndPoint.X = -1;
+            InitMap();
             GameObject.IsDrawOk = true;
             GameObject.Cost = 0;
+            TotalCost = -2;
             AutoModelOpen = false;
             ManualModelOpen = false;
+            mapDrawMode = MapDrawMode.None;
             Type = OperType.None;
             SingleObject.GetObject().T = null;
             SingleObject.GetObject().S = null; 
@@ -168,8 +201,8 @@ namespace DS课设_坦克大战最短路_
             #endregion
             #region 重新添加游戏对象
             int TmpWidth, TmpHeight;
-            for(int i=0;i<15;i++)
-                for(int j=0;j<15;j++)
+            for (int i = 0; i < GridNum; i++)
+                for (int j = 0; j < GridNum; j++)
                 {
                     TmpWidth = i * GridWidth;
                     TmpHeight = j* GridWidth + Tank.LeftUpY;
@@ -211,21 +244,61 @@ namespace DS课设_坦克大战最短路_
         #region 响应菜单事件
         private void TankMenu_Click(object sender, EventArgs e)
         {
+            if (mapDrawMode == MapDrawMode.None)
+            {
+                MessageBox.Show("还未指定地图绘制模式，不能进行绘制！");
+                return;
+            }
+            if(mapDrawMode==MapDrawMode.Auto)
+            {
+                MessageBox.Show("你当前选择的是自动模式，不能进行手动绘制");
+                return;
+            }
             if(SingleObject.GetObject().T==null)
             Type = OperType.DrawTank;
         }
 
         private void BrickMenu_Click(object sender, EventArgs e)
         {
+            if (mapDrawMode == MapDrawMode.None)
+            {
+                MessageBox.Show("还未指定地图绘制模式，不能进行绘制！");
+                return;
+            }
+            if (mapDrawMode == MapDrawMode.Auto)
+            {
+                MessageBox.Show("你当前选择的是自动模式，不能进行手动绘制");
+                return;
+            }
             Type = OperType.DrawBrick;
         }
 
         private void SteelMenu_Click(object sender, EventArgs e)
         {
+            if (mapDrawMode == MapDrawMode.None)
+            {
+                MessageBox.Show("还未指定地图绘制模式，不能进行绘制！");
+                return;
+            }
+            if (mapDrawMode == MapDrawMode.Auto)
+            {
+                MessageBox.Show("你当前选择的是自动模式，不能进行手动绘制");
+                return;
+            }
             Type = OperType.DrawSteel;
          }
         private void RiverMenu_Click(object sender, EventArgs e)
         {
+            if (mapDrawMode == MapDrawMode.None)
+            {
+                MessageBox.Show("还未指定地图绘制模式，不能进行绘制！");
+                return;
+            }
+            if (mapDrawMode == MapDrawMode.Auto)
+            {
+                MessageBox.Show("你当前选择的是自动模式，不能进行手动绘制");
+                return;
+            }
             Type = OperType.DrawRiver;
         }
 
@@ -253,6 +326,7 @@ namespace DS课设_坦克大战最短路_
             ManualModelOpen = false;
             //绘制关闭
             GameObject.IsDrawOk = false;
+        /*
             //地图类型转换
             int add = 0;
             StringBuilder sb = new StringBuilder();
@@ -267,7 +341,9 @@ namespace DS课设_坦克大战最短路_
             //调用C++ dll 处理
             TotalCost = bfs(s, GameObject.AcationPath,ref TotalStep);
           //  MessageBox.Show(TotalCost.ToString());
-            if (TotalCost == -1)
+              */
+            
+            if (mapDrawMode== MapDrawMode.Manual&&RunTest()==false)
             {
                 MessageBox.Show("此图无法到达终点","非法数据");
                 return;
@@ -364,6 +440,8 @@ namespace DS课设_坦克大战最短路_
             EnergyCost.Text = GameObject.Cost.ToString();
             //绘制当前界面
             SingleObject.GetObject().Draw(e.Graphics);
+            //更新当前时间
+            NextStep.Text=DateTime.Now.ToLongTimeString().ToString(); 
             //更新当前坦克坐标
             if (SingleObject.GetObject().T != null)
             {
@@ -388,6 +466,8 @@ namespace DS课设_坦克大战最短路_
         #region load事件
         private void MainForm_Load(object sender, EventArgs e)
         {
+            helpProvider.HelpNamespace = Application.StartupPath + @"\帮助文档.chm";
+          helpProvider.SetShowHelp(this, true);
             SplashScreen.ShowSplashScreen();
             System.Threading.Thread.Sleep(4000);
             if (SplashScreen.Instance != null)
@@ -407,9 +487,27 @@ namespace DS课设_坦克大战最短路_
         #region KeyDown事件
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
+            if(e.Modifiers== Keys.Control&&e.KeyCode == Keys.H)
+            {
+                Introduction introductionForm = new Introduction();
+                Image image = Resources.游戏操作说明;
+                introductionForm.Width = image.Width + 5;
+                introductionForm.Height = image.Height + 35;
+                introductionForm.BackgroundImage = image;
+                introductionForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+          
+                introductionForm.ShowDialog();
+                //introductionForm.TopLevel = true;
+              //  introductionForm.TopMost = true;
+                return;
+            }
+            if (!(e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right||e.KeyCode==Keys.Enter))
+            {
+                return;
+            }
             if (AutoModelOpen == true)
             {
-                //如果自动模式开启，则不响应鼠标事件
+                //如果自动模式开启，则不响应按键
                 return;
             }
             if (GameObject.IsDrawOk == true)
@@ -421,14 +519,35 @@ namespace DS课设_坦克大战最短路_
             
         }
         #endregion
+        #region RunTest
+        public bool RunTest()
+        {
+            //地图类型转换
+            int add = 0;
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in GameObject.InitMap)
+            {
+                sb.Append(c);
+                add++;
+                //   if (add % 15 == 0) sb.Append("\n");
+            }
+            string s = sb.ToString();
+            //     MessageBox.Show(s);
+            //调用C++ dll 处理
+            TotalCost = bfs(s, GameObject.AcationPath, ref TotalStep);
+            if (TotalCost == -1) return false;
+            return true;
+        }
+        #endregion
         #region AutoRun 方法
-        public static void AutoRun()
+        public  void AutoRun()
         {
             for (int i = 0; i <TotalStep; i++)
             {
                 switch (GameObject.AcationPath[i])
                 {
                     case TankAcationType.ChangeTheDirToUp:
+                        NextStep.Text = "下一步: 向上";
                         MessageBox.Show("向上");
                         GameObject.Cost++;
                         SingleObject.GetObject().T.Dir = Direction.Up;
@@ -558,6 +677,75 @@ namespace DS课设_坦克大战最短路_
             }
         }
         #endregion
+        #region AuotDrawMap
+        public void AuotDrawMap(int totalNum)
+        {
+            bool toDraw= true;
+            while(toDraw)
+            {
+                InitMap();
+                //生成坦克
+                int tmpx = randomNum.Next() % WidthX;
+                int tmpy = randomNum.Next() % HeightY;
+                GameObject.StartPoint.X = tmpx;
+                GameObject.StartPoint.Y = tmpy;
+                GameObject.InitMap[tmpx, tmpy] = 'T';
+                //生成星星
+                while (GameObject.InitMap[tmpx, tmpy] != 'X')
+                {
+                    tmpx = randomNum.Next() % WidthX;
+                    tmpy = randomNum.Next() % HeightY;
+                    if (GameObject.InitMap[tmpx, tmpy] == '#')
+                    {
+                        GameObject.InitMap[tmpx, tmpy] = 'X';
+                        GameObject.EndPoint.X = tmpx;
+                        GameObject.EndPoint.Y = tmpy;
+                    }
+                }
+
+                //生成砖块
+                for (int i = 0; i < totalNum; i++)
+                {
+                    tmpx = randomNum.Next() % WidthX;
+                    tmpy = randomNum.Next() % HeightY;
+                    if (GameObject.InitMap[tmpx, tmpy] == '#')
+                    {
+                        GameObject.InitMap[tmpx, tmpy] = 'B';
+                        GameObject.InitIsVisit[tmpx, tmpy] = false;
+                    }
+                }
+                //生成河水
+                for (int i = 0; i < totalNum; i++)
+                {
+                    tmpx = randomNum.Next() %  WidthX;
+                    tmpy = randomNum.Next() % HeightY;
+                    if (GameObject.InitMap[tmpx, tmpy] == '#')
+                    {
+                        GameObject.InitMap[tmpx, tmpy] = 'R';
+                        GameObject.InitIsVisit[tmpx, tmpy] = false;
+                    }
+                }
+
+                //生成钢墙
+                for (int i = 0; i < totalNum; i++)
+                {
+                    tmpx = randomNum.Next() % WidthX;
+                    tmpy = randomNum.Next() % HeightY;
+                    if (GameObject.InitMap[tmpx, tmpy] == '#')
+                    {
+                        GameObject.InitMap[tmpx, tmpy] = 'S';
+                        GameObject.InitIsVisit[tmpx, tmpy] = false;
+                    }
+                }
+                if (RunTest())
+                {
+                    InitGame();
+                    toDraw = false;
+                }
+            }
+           
+        }
+        #endregion
         /// <summary>
         /// 重新开始新游戏
         /// </summary>
@@ -576,6 +764,46 @@ namespace DS课设_坦克大战最短路_
         {
             label3.Text="当前鼠标坐标: "+(e.X/GridWidth).ToString()+","+((e.Y-Tank.LeftUpY)/GridWidth).ToString();
             //label3.Text = "当前鼠标坐标: " + (e.X).ToString() + "," + (e.Y).ToString();
+        }
+
+        private void CutPic_Click(object sender, EventArgs e)
+        {
+            //允许绘制
+            isCutDraw = true; 
+            Graphics g = Graphics.FromImage(CatchBmp);
+            g.CopyFromScreen(new Point(0, 0), new Point(0, 0), new Size(Screen.AllScreens[0].Bounds.Width,
+                Screen.AllScreens[0].Bounds.Width));
+            cutter.Width = CatchBmp.Width;
+            cutter.Height = CatchBmp.Height;
+            cutter.BackgroundImage = CatchBmp;
+            cutter.Visible = true;
+        }
+        private void 自动生成ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mapDrawMode = MapDrawMode.Auto;
+            AuotDrawMap(20);
+        }
+
+        private void ManualMapMenu_Click(object sender, EventArgs e)
+        {
+            mapDrawMode = MapDrawMode.Manual;
+        }
+
+        private void 新游戏ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewGame();
+        }
+
+        private void 游戏说明ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           Introduction introductionForm = new Introduction();
+            Image image = Resources.游戏操作说明;
+            introductionForm.Width = image.Width + 10;
+            introductionForm.Height = image.Height + 35;
+            introductionForm.BackgroundImage = image;
+            introductionForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+     
+            introductionForm.ShowDialog();
         }
     }
     

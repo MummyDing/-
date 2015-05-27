@@ -39,7 +39,7 @@ namespace DS课设_坦克大战最短路_
             InitializeComponent();
 
             // 设置窗体的类型  
-            const string showInfo = "坦克大战最短路      作者 : MummyDing ";
+            const string showInfo = "\t坦克大战最短路\n\n\t作者 : MummyDing ";
             FormBorderStyle = FormBorderStyle.None;
             StartPosition = FormStartPosition.CenterScreen;
             ShowInTaskbar = false;
